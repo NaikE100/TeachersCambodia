@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tammy's Shade of Curls - Premium Hair Products | tammyscurls.com</title>
+    <meta name="description" content="Premium hair products for every curl, wave, and style. Professional tools for salon-quality results at home. Visit tammyscurls.com for the best hair care products.">
+    <meta name="keywords" content="hair products, hair dryers, straighteners, curling irons, hair brushes, hair trimmers, professional hair tools, tammyscurls">
+    <meta name="author" content="Tammy's Shade of Curls">
+    <meta property="og:title" content="Tammy's Shade of Curls - Premium Hair Products">
+    <meta property="og:description" content="Premium hair products for every curl, wave, and style. Professional tools for salon-quality results at home.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tammyscurls.com">
+    <link rel="canonical" href="https://tammyscurls.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>T</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-container">
+                    <img src="logo.png" alt="Tammy's Shade of Curls Logo" class="logo-image">
+                    <h2 class="logo-text">Tammy's Shade of Curls</h2>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#cart" class="nav-link cart-icon"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Perfect Hair Style</h1>
+            <p>Premium hair products for every curl, wave, and style. Professional tools for salon-quality results at home.</p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </div>
+        <div class="hero-image">
+            <div class="hero-graphic">
+                <i class="fas fa-cut"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2>Shop by Category</h2>
+            <div class="category-grid">
+                <div class="category-card" data-category="oils">
+                    <i class="fas fa-tint"></i>
+                    <h3>Hair Oils</h3>
+                    <p>Premium natural oils for hair growth</p>
+                </div>
+                <div class="category-card" data-category="treatments">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Hair Treatments</h3>
+                    <p>Professional repair treatments</p>
+                </div>
+                <div class="category-card" data-category="dryers">
+                    <i class="fas fa-wind"></i>
+                    <h3>Hair Dryers</h3>
+                    <p>Professional dryers for perfect styling</p>
+                </div>
+                <div class="category-card" data-category="brushes">
+                    <i class="fas fa-brush"></i>
+                    <h3>Brushes & Combs</h3>
+                    <p>Gentle detangling and styling</p>
+                </div>
+                <div class="category-card" data-category="curlers">
+                    <i class="fas fa-circle"></i>
+                    <h3>Curlers & Rollers</h3>
+                    <p>Create beautiful curls and waves</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="filter-bar">
+                <select id="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="oils">Hair Oils</option>
+                    <option value="treatments">Hair Treatments</option>
+                    <option value="dryers">Hair Dryers</option>
+                    <option value="brushes">Brushes & Combs</option>
+                    <option value="curlers">Curlers & Rollers</option>
+                </select>
+                <select id="sort-filter">
+                    <option value="name">Sort by Name</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+            <div id="products-grid" class="products-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About Tammy's Shade of Curls</h2>
+                <p>We're passionate about helping you achieve your perfect hair style with premium natural products. Our carefully curated selection of professional hair oils, treatments, and styling tools ensures you get salon-quality results in the comfort of your home.</p>
+                <p>From nourishing hair oils to professional styling tools, we offer everything you need to create stunning looks for any occasion. Our products are selected for their quality, natural ingredients, and proven results.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Natural Ingredients</h3>
+                        <p>Premium natural oils and treatments</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Fast Delivery</h3>
+                        <p>Quick delivery across Western Cape</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <h3>Expert Advice</h3>
+                        <p>Professional hair care guidance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>062 671 8275</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>TSAAYMAN9@GMAIL.COM</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>GEORGE, WESTERN CAPE</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-facebook"></i>
+                        <p><a href="https://www.facebook.com/share/1CDZPDRubC/?mibextid=wwXIfr" target="_blank" style="color: inherit; text-decoration: none;">TAMMY'S SHADES OF CURLS</a></p>
+                    </div>
+                </div>
+                <form class="contact-form" id="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for the latest products and styling tips!</p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                <h3>Total: R<span id="cart-total">0.00</span></h3>
+                <button id="checkout-btn" class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="logo.png" alt="Tammy's Shade of Curls Logo" class="footer-logo-image">
+                        <h3>Tammy's Shade of Curls</h3>
+                    </div>
+                    <p>Premium hair products for every style.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="soc
+                    
+                    ial-links">
+                        <a href="https://www.facebook.com/share/1CDZPDRubC/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Tammy's Shade of Curls. All rights reserved. | tammyscurls.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+

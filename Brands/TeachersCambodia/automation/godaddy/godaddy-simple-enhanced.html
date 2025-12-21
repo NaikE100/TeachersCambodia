@@ -1,0 +1,681 @@
+<!-- TeachersCambodia AI Automation - Simple Enhanced Version -->
+<div id="teachers-cambodia-ai-widget" style="display: none;">
+  <div class="ai-widget-container">
+    <div class="ai-widget-header">
+      <h3>🤖 AI-Powered Job Matching</h3>
+      <button class="ai-widget-close" onclick="toggleAIWidget()">×</button>
+    </div>
+    
+    <div class="ai-widget-content">
+      <div class="ai-form-row">
+        <div class="ai-form-section">
+          <h4>👤 Teacher Profile</h4>
+          <input type="text" id="teacherName" placeholder="Your Name" class="ai-input">
+          <select id="teacherSubject" class="ai-select">
+            <option value="">Select Subject</option>
+            <option value="english">🇬🇧 English</option>
+            <option value="math">🔢 Mathematics</option>
+            <option value="science">🔬 Science</option>
+            <option value="history">📚 History</option>
+            <option value="art">🎨 Art</option>
+            <option value="music">🎵 Music</option>
+            <option value="pe">⚽ Physical Education</option>
+            <option value="esl">🌍 ESL/TEFL</option>
+          </select>
+          <select id="teacherExperience" class="ai-select">
+            <option value="">Years of Experience</option>
+            <option value="0-1">🆕 0-1 years</option>
+            <option value="2-5">⭐ 2-5 years</option>
+            <option value="6-10">🌟 6-10 years</option>
+            <option value="10+">🏆 10+ years</option>
+          </select>
+          <input type="text" id="teacherLocation" placeholder="Preferred Location" class="ai-input">
+        </div>
+        
+        <div class="ai-form-section">
+          <h4>💼 Job Preferences</h4>
+          <select id="jobType" class="ai-select">
+            <option value="">Job Type</option>
+            <option value="full-time">⏰ Full Time</option>
+            <option value="part-time">🕐 Part Time</option>
+            <option value="contract">📋 Contract</option>
+            <option value="substitute">🔄 Substitute</option>
+          </select>
+          <select id="salaryRange" class="ai-select">
+            <option value="">Salary Range</option>
+            <option value="500-1000">💰 $500 - $1,000</option>
+            <option value="1000-2000">💵 $1,000 - $2,000</option>
+            <option value="2000-3000">💎 $2,000 - $3,000</option>
+            <option value="3000+">🏆 $3,000+</option>
+          </select>
+          
+          <div class="ai-features">
+            <h5>✨ AI Features</h5>
+            <div class="feature-list">
+              <div class="feature-item">🎯 Smart Matching</div>
+              <div class="feature-item">📊 Match Scores</div>
+              <div class="feature-item">💡 Personalized Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <button onclick="findMatchingJobs()" class="ai-button">🔍 Find Matching Jobs</button>
+      
+      <div id="aiResults" class="ai-results" style="display: none;">
+        <h4>🎯 AI Match Results</h4>
+        <div id="matchResults"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating AI Chatbot Icon -->
+<div id="ai-chatbot-icon" onclick="toggleAIWidget()" class="ai-chatbot-icon">
+  🤖
+</div>
+
+<style>
+/* Enhanced TeachersCambodia AI Widget Styles */
+#teachers-cambodia-ai-widget {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.ai-widget-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-widget-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px 30px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-widget-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.ai-widget-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.ai-widget-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.ai-widget-content {
+  padding: 30px;
+}
+
+.ai-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.ai-form-section {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ai-form-section h4 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ai-input, .ai-select {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: white;
+}
+
+.ai-input:focus, .ai-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.ai-features {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.ai-features h5 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.feature-item {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.ai-button {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.ai-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.ai-button:active {
+  transform: translateY(-1px);
+}
+
+.ai-results {
+  margin-top: 30px;
+  padding: 25px;
+  background: white;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  border-left: 5px solid #667eea;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ai-results h4 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.match-item {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.match-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.match-score {
+  display: inline-block;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.match-title {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.match-details {
+  color: #6c757d;
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.match-strengths {
+  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+/* Enhanced Floating Chatbot Icon */
+.ai-chatbot-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  z-index: 9999;
+  transition: all 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.ai-chatbot-icon:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+}
+
+/* Loading Animation */
+.ai-loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.ai-loading::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e9ecef;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ai-widget-container {
+    width: 95%;
+    margin: 10px;
+    max-height: 95vh;
+  }
+  
+  .ai-form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .ai-widget-content {
+    padding: 20px;
+  }
+  
+  .ai-widget-header {
+    padding: 20px;
+  }
+  
+  .ai-widget-header h3 {
+    font-size: 20px;
+  }
+  
+  .ai-chatbot-icon {
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+// Enhanced TeachersCambodia AI Automation - JavaScript Functions
+
+// Configuration
+const AI_CONFIG = {
+  apiUrl: 'https://your-ai-backend-url.com/api',
+  apiKey: 'your-api-key-here',
+  maxResults: 5,
+  matchThreshold: 0.6
+};
+
+// Enhanced sample job data
+const SAMPLE_JOBS = [
+  {
+    id: 1,
+    title: "English Teacher - International School",
+    school: "Phnom Penh International Academy",
+    location: "Phnom Penh",
+    salary: "$1,500 - $2,500",
+    type: "Full Time",
+    requirements: "TEFL certified, 2+ years experience",
+    matchScore: 0.92,
+    strengths: ["Perfect subject match", "Experience level ideal", "Location preference met"]
+  },
+  {
+    id: 2,
+    title: "ESL Teacher - Language Center",
+    school: "Cambodia English Center",
+    location: "Siem Reap",
+    salary: "$800 - $1,200",
+    type: "Part Time",
+    requirements: "Native English speaker, TEFL preferred",
+    matchScore: 0.78,
+    strengths: ["Subject expertise", "Flexible schedule", "Cultural experience"]
+  },
+  {
+    id: 3,
+    title: "Mathematics Teacher - Private School",
+    school: "Royal Cambodian School",
+    location: "Battambang",
+    salary: "$1,200 - $1,800",
+    type: "Full Time",
+    requirements: "Bachelor's degree, teaching experience",
+    matchScore: 0.65,
+    strengths: ["Good salary range", "Stable position", "Professional development"]
+  },
+  {
+    id: 4,
+    title: "Science Teacher - International School",
+    school: "Angkor International School",
+    location: "Phnom Penh",
+    salary: "$1,800 - $2,800",
+    type: "Full Time",
+    requirements: "Science degree, 3+ years experience",
+    matchScore: 0.85,
+    strengths: ["High salary range", "International environment", "Modern facilities"]
+  }
+];
+
+// Toggle AI Widget
+function toggleAIWidget() {
+  const widget = document.getElementById('teachers-cambodia-ai-widget');
+  const icon = document.getElementById('ai-chatbot-icon');
+  
+  if (widget.style.display === 'none' || widget.style.display === '') {
+    widget.style.display = 'flex';
+    icon.style.display = 'none';
+  } else {
+    widget.style.display = 'none';
+    icon.style.display = 'flex';
+  }
+}
+
+// Find Matching Jobs
+async function findMatchingJobs() {
+  const resultsDiv = document.getElementById('aiResults');
+  const matchResultsDiv = document.getElementById('matchResults');
+  
+  // Show loading
+  resultsDiv.style.display = 'block';
+  matchResultsDiv.innerHTML = '<div class="ai-loading">🤖 AI is analyzing your profile and finding the best matches...</div>';
+  
+  // Get form data
+  const teacherData = {
+    name: document.getElementById('teacherName').value,
+    subject: document.getElementById('teacherSubject').value,
+    experience: document.getElementById('teacherExperience').value,
+    location: document.getElementById('teacherLocation').value,
+    jobType: document.getElementById('jobType').value,
+    salaryRange: document.getElementById('salaryRange').value
+  };
+  
+  // Validate input
+  if (!teacherData.subject || !teacherData.experience) {
+    matchResultsDiv.innerHTML = `
+      <div style="text-align: center; padding: 30px; color: #dc3545;">
+        <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+        <h4 style="margin: 0 0 10px 0;">Please complete your profile</h4>
+        <p style="margin: 0; font-size: 14px;">Fill in at least your subject and experience level.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  try {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Process matches
+    const matches = processJobMatches(teacherData);
+    
+    // Display results
+    displayMatchResults(matches);
+    
+  } catch (error) {
+    console.error('Error finding matches:', error);
+    matchResultsDiv.innerHTML = `
+      <div style="text-align: center; padding: 30px; color: #dc3545;">
+        <div style="font-size: 48px; margin-bottom: 15px;">😔</div>
+        <h4 style="margin: 0 0 10px 0;">Oops! Something went wrong</h4>
+        <p style="margin: 0; font-size: 14px;">Please try again in a moment.</p>
+      </div>
+    `;
+  }
+}
+
+// Process Job Matches
+function processJobMatches(teacherData) {
+  let matches = [...SAMPLE_JOBS];
+  
+  // Apply AI matching logic
+  matches = matches.map(job => {
+    let score = 0;
+    let strengths = [];
+    
+    // Subject matching
+    if (job.title.toLowerCase().includes(teacherData.subject.toLowerCase()) || 
+        teacherData.subject === 'esl' && job.title.toLowerCase().includes('esl')) {
+      score += 0.3;
+      strengths.push('Perfect subject match');
+    }
+    
+    // Experience matching
+    if (teacherData.experience === '2-5' && job.requirements.includes('2+')) {
+      score += 0.25;
+      strengths.push('Experience level ideal');
+    } else if (teacherData.experience === '6-10' && job.requirements.includes('experience')) {
+      score += 0.25;
+      strengths.push('Experience level ideal');
+    }
+    
+    // Location matching
+    if (teacherData.location && job.location.toLowerCase().includes(teacherData.location.toLowerCase())) {
+      score += 0.2;
+      strengths.push('Location preference met');
+    }
+    
+    // Job type matching
+    if (teacherData.jobType && job.type.toLowerCase().includes(teacherData.jobType.toLowerCase())) {
+      score += 0.15;
+      strengths.push('Job type preference met');
+    }
+    
+    // Salary matching
+    if (teacherData.salaryRange && job.salary.includes(teacherData.salaryRange.split('-')[0].trim())) {
+      score += 0.1;
+      strengths.push('Salary expectations met');
+    }
+    
+    return {
+      ...job,
+      matchScore: Math.min(score, 1),
+      strengths: strengths.length > 0 ? strengths : ['Good overall match']
+    };
+  });
+  
+  // Filter and sort by match score
+  matches = matches
+    .filter(job => job.matchScore >= AI_CONFIG.matchThreshold)
+    .sort((a, b) => b.matchScore - a.matchScore)
+    .slice(0, AI_CONFIG.maxResults);
+  
+  return matches;
+}
+
+// Display Match Results
+function displayMatchResults(matches) {
+  const matchResultsDiv = document.getElementById('matchResults');
+  
+  if (matches.length === 0) {
+    matchResultsDiv.innerHTML = `
+      <div style="text-align: center; padding: 40px 20px; color: #6c757d;">
+        <div style="font-size: 64px; margin-bottom: 20px;">🔍</div>
+        <h4 style="margin: 0 0 15px 0; color: #2c3e50;">No matches found</h4>
+        <p style="margin: 0 0 20px 0; font-size: 16px;">Try adjusting your preferences or check back later for new opportunities.</p>
+        <button onclick="toggleAIWidget()" style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+          Try Different Criteria
+        </button>
+      </div>
+    `;
+    return;
+  }
+  
+  const resultsHTML = matches.map((job, index) => `
+    <div class="match-item" style="animation: slideInUp 0.5s ease ${index * 0.1}s both;">
+      <div class="match-score">${Math.round(job.matchScore * 100)}% Match</div>
+      <div class="match-title">${job.title}</div>
+      <div class="match-details">
+        <strong>🏫 ${job.school}</strong><br>
+        📍 ${job.location} | 💰 ${job.salary} | ⏰ ${job.type}<br>
+        📋 ${job.requirements}
+      </div>
+      <div class="match-strengths">
+        <strong>✨ Why this matches:</strong> ${job.strengths.join(', ')}
+      </div>
+    </div>
+  `).join('');
+  
+  matchResultsDiv.innerHTML = resultsHTML;
+}
+
+// Initialize AI Widget
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🤖 TeachersCambodia AI Automation Platform loaded successfully!');
+  
+  // Add event listeners
+  const inputs = document.querySelectorAll('.ai-input, .ai-select');
+  inputs.forEach(input => {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        findMatchingJobs();
+      }
+    });
+  });
+  
+  // Add keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      toggleAIWidget();
+    }
+    
+    if (e.key === 'Escape') {
+      const widget = document.getElementById('teachers-cambodia-ai-widget');
+      if (widget.style.display === 'flex') {
+        toggleAIWidget();
+      }
+    }
+  });
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+document.head.appendChild(style);
+</script>

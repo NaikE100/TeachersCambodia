@@ -19,7 +19,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
       id: 'basic',
       name: 'CV Review',
       price: '$49',
-      description: 'Professional CV optimization for international teaching',
+      description: 'Professional CV optimization for all industries and career paths',
       features: [
         'Professional CV review',
         'ATS optimization',
@@ -33,7 +33,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
       id: 'standard',
       name: 'Standard Package',
       price: '$199',
-      description: 'Complete application support for your teaching journey',
+      description: 'Complete application support for your career journey',
       features: [
         'CV upgrade & review',
         'Cover letter writing',
@@ -48,12 +48,12 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
       id: 'premium',
       name: 'Premium Package',
       price: '$399',
-      description: 'Full-service placement with end-to-end support',
+      description: 'Full-service career support with end-to-end assistance',
       features: [
         'Everything in Standard',
         'Dedicated consultant',
         'Visa support & guidance',
-        'School placement assistance',
+        'Job placement assistance',
         'Mock interviews (3 sessions)',
         'Post-placement support',
         '24/7 priority support'

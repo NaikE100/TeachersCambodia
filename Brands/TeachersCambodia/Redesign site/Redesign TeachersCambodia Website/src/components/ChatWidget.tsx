@@ -75,6 +75,34 @@ export function ChatWidget() {
     }
   }, [isOpen, isMinimized]);
 
+  // Handle ESC key to close chat
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen && !isMinimized) {
+        handleClose();
+      }
+    };
+
+    if (isOpen && !isMinimized) {
+      window.addEventListener('keydown', handleEscape);
+      return () => window.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, isMinimized]);
+
+  // Handle ESC key to close chat
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen && !isMinimized) {
+        handleClose();
+      }
+    };
+
+    if (isOpen && !isMinimized) {
+      window.addEventListener('keydown', handleEscape);
+      return () => window.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, isMinimized]);
+
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -214,27 +242,29 @@ export function ChatWidget() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsMinimized(!isMinimized)}
-                    className="h-8 w-8 text-white hover:bg-white/20"
+                    className="h-9 w-9 text-white hover:bg-white/30 hover:scale-110 transition-all"
                     aria-label={isMinimized ? "Maximize chat" : "Minimize chat"}
+                    title="Minimize chat"
                   >
-                    <Minimize2 className="h-4 w-4" />
+                    <Minimize2 className="h-5 w-5" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={handleClose}
-                    className="h-8 w-8 text-white hover:bg-white/20"
+                    className="h-9 w-9 text-white hover:bg-red-500/30 hover:scale-110 transition-all"
                     aria-label="Close chat"
+                    title="Close chat (Esc)"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5" />
                   </Button>
                 </div>
               </div>
 
               {/* Messages Area */}
-              <div className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full p-4">
-                  <div className="space-y-4">
+              <div className="flex-1 overflow-hidden relative">
+                <ScrollArea className="h-full w-full">
+                  <div className="p-4 space-y-4">
                     {messages.map((message) => (
                     <motion.div
                       key={message.id}
@@ -304,7 +334,7 @@ export function ChatWidget() {
                   </Button>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  Press Enter to send
+                  Press Enter to send • Esc to close
                 </p>
               </div>
             </div>

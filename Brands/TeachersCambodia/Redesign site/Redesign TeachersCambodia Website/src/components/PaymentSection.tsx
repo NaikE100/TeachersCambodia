@@ -18,7 +18,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'basic',
       name: 'CV Review',
-      price: '$49',
+      price: 'R899',
       description: 'Professional CV optimization for all industries and career paths',
       features: [
         'Professional CV review',
@@ -32,7 +32,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'standard',
       name: 'Standard Package',
-      price: '$199',
+      price: 'R1,999',
       description: 'Complete application support for your career journey',
       features: [
         'CV upgrade & review',
@@ -47,7 +47,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'premium',
       name: 'Premium Package',
-      price: '$399',
+      price: 'R3,999',
       description: 'Full-service career support with end-to-end assistance',
       features: [
         'Everything in Standard',
@@ -128,7 +128,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
                     <h3 className="mb-2 text-black">{pkg.name}</h3>
                     <div className="flex items-baseline gap-2 mb-3">
                       <span className="text-4xl text-black">{pkg.price}</span>
-                      <span className="text-gray-500">USD</span>
+                      <span className="text-gray-500">ZAR</span>
                     </div>
                     <p className="text-sm text-gray-600">{pkg.description}</p>
                   </div>
@@ -220,7 +220,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
           >
             <p>
               Need a custom package? Contact us for enterprise solutions and bulk discounts.
-              All prices in USD. Payment is processed in your local currency.
+              All prices in ZAR (South African Rand). Payment is processed securely through PayFast.
             </p>
           </motion.div>
         </div>

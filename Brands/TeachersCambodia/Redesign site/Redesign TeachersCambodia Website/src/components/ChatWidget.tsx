@@ -79,21 +79,8 @@ export function ChatWidget() {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen && !isMinimized) {
-        handleClose();
-      }
-    };
-
-    if (isOpen && !isMinimized) {
-      window.addEventListener('keydown', handleEscape);
-      return () => window.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, isMinimized]);
-
-  // Handle ESC key to close chat
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen && !isMinimized) {
-        handleClose();
+        setIsOpen(false);
+        setIsMinimized(false);
       }
     };
 
@@ -223,48 +210,46 @@ export function ChatWidget() {
               isMinimized ? 'pointer-events-none' : ''
             }`}
           >
-            <div className="bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col h-[500px] sm:h-[600px] max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-8rem)]">
-              {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-blue-600 text-white rounded-t-lg">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <MessageCircle className="h-5 w-5" />
+            <div className="bg-white rounded-lg shadow-2xl border-2 border-gray-300 flex flex-col h-[500px] sm:h-[600px] max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-8rem)] overflow-hidden">
+              {/* Header - Always Visible */}
+              <div className="flex items-center justify-between px-4 py-3 border-b-2 border-blue-700 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg shrink-0">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="h-10 w-10 rounded-full bg-white/25 flex items-center justify-center shrink-0">
+                    <MessageCircle className="h-5 w-5 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">TeachersCambodia AI Assistant</h3>
-                    <p className="text-xs text-blue-100">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold text-sm truncate">TeachersCambodia AI Assistant</h3>
+                    <p className="text-xs text-blue-100 truncate">
                       {isAIEnabled() ? 'AI-powered support' : "We're here to help!"}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
                     onClick={() => setIsMinimized(!isMinimized)}
-                    className="h-9 w-9 text-white hover:bg-white/30 hover:scale-110 transition-all"
+                    className="h-8 w-8 flex items-center justify-center text-white hover:bg-white/30 rounded-md transition-all active:scale-95"
                     aria-label={isMinimized ? "Maximize chat" : "Minimize chat"}
-                    title="Minimize chat"
+                    title="Minimize"
+                    type="button"
                   >
-                    <Minimize2 className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
+                    <Minimize2 className="h-4 w-4" />
+                  </button>
+                  <button
                     onClick={handleClose}
-                    className="h-9 w-9 text-white hover:bg-red-500/30 hover:scale-110 transition-all"
+                    className="h-8 w-8 flex items-center justify-center text-white hover:bg-red-500 hover:bg-opacity-80 rounded-md transition-all active:scale-95 font-bold"
                     aria-label="Close chat"
-                    title="Close chat (Esc)"
+                    title="Close (Esc)"
+                    type="button"
                   >
                     <X className="h-5 w-5" />
-                  </Button>
+                  </button>
                 </div>
               </div>
 
               {/* Messages Area */}
-              <div className="flex-1 overflow-hidden relative">
+              <div className="flex-1 overflow-hidden relative bg-gray-50">
                 <ScrollArea className="h-full w-full">
-                  <div className="p-4 space-y-4">
+                  <div className="p-4 space-y-4 min-h-full">
                     {messages.map((message) => (
                     <motion.div
                       key={message.id}
@@ -273,10 +258,10 @@ export function ChatWidget() {
                       className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                        className={`max-w-[80%] rounded-2xl px-4 py-2.5 shadow-sm ${
                           message.sender === 'user'
-                            ? 'bg-blue-600 text-white rounded-br-none'
-                            : 'bg-gray-100 text-gray-900 rounded-bl-none'
+                            ? 'bg-blue-600 text-white rounded-br-sm'
+                            : 'bg-white text-gray-900 border border-gray-200 rounded-bl-sm'
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap break-words">{message.text}</p>
@@ -312,8 +297,8 @@ export function ChatWidget() {
               </div>
 
               {/* Input Area */}
-              <div className="p-4 border-t border-gray-200">
-                <div className="flex gap-2">
+              <div className="p-4 border-t-2 border-gray-200 bg-white rounded-b-lg shrink-0">
+                <div className="flex gap-2 items-center">
                   <input
                     ref={inputRef}
                     type="text"
@@ -321,21 +306,30 @@ export function ChatWidget() {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Type your message..."
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    className="flex-1 px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all"
                   />
-                  <Button
+                  <button
                     onClick={handleSendMessage}
                     disabled={!inputValue.trim()}
-                    size="icon"
-                    className="h-10 w-10 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+                    className="h-10 w-10 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-all flex items-center justify-center shrink-0 active:scale-95"
                     aria-label="Send message"
+                    type="button"
                   >
                     <Send className="h-4 w-4" />
-                  </Button>
+                  </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Press Enter to send • Esc to close
-                </p>
+                <div className="flex items-center justify-between mt-2">
+                  <p className="text-xs text-gray-500">
+                    Press Enter to send
+                  </p>
+                  <button
+                    onClick={handleClose}
+                    className="text-xs text-gray-500 hover:text-red-600 underline transition-colors"
+                    type="button"
+                  >
+                    Close chat
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>

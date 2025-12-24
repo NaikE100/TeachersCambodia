@@ -18,7 +18,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'basic',
       name: 'CV Review',
-      price: 'R899',
+      price: 'R300',
       description: 'Professional CV optimization for all industries and career paths',
       features: [
         'Professional CV review',
@@ -32,7 +32,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'standard',
       name: 'Standard Package',
-      price: 'R1,999',
+      price: 'R1,299',
       description: 'Complete application support for your career journey',
       features: [
         'CV upgrade & review',
@@ -47,7 +47,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'premium',
       name: 'Premium Package',
-      price: 'R3,999',
+      price: 'R2,499',
       description: 'Full-service career support with end-to-end assistance',
       features: [
         'Everything in Standard',

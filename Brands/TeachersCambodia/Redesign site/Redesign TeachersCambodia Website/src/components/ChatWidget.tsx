@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
+import { getAIResponse, isAIEnabled } from '../services/aiChat';
 
 interface Message {
   id: string;
@@ -11,61 +12,11 @@ interface Message {
   timestamp: Date;
 }
 
-const AUTO_RESPONSES: Record<string, string> = {
-  'hello': 'Hello! 👋 Welcome to TeachersCambodia. How can I help you today?',
-  'hi': 'Hi there! 👋 I\'m here to help you with any questions about teaching opportunities in Cambodia.',
-  'requirements': 'To teach in Cambodia, you typically need a Bachelor\'s degree, TEFL/TESOL certificate, and a valid passport. Some schools may require teaching experience. Would you like more details?',
-  'salary': 'Teacher salaries in Cambodia vary by school and experience, typically ranging from $800-$2000 per month. International schools offer higher packages. Can I help you find specific opportunities?',
-  'visa': 'Most schools in Cambodia assist with visa sponsorship. You\'ll typically get a business visa initially, then transition to a work permit. Need help with the application process?',
-  'location': 'We place teachers in Phnom Penh, Siem Reap, and other major cities across Cambodia. Each location offers unique experiences. What interests you most?',
-  'apply': 'You can apply directly through our website! Visit the "Apply" section to upload your resume and complete the application form. I can guide you through it!',
-  'help': 'I can help you with:\n• Application process\n• Requirements and qualifications\n• Visa information\n• Salary and benefits\n• School locations\n• Job opportunities\n\nWhat would you like to know?',
-  'contact': 'You can reach us via:\n• Email: info@teacherscambodia.com\n• Phone: (available in the Contact section)\n• This chat widget\n\nIs there something specific I can help with?',
-};
-
 const GREETING_MESSAGES = [
-  "Hi! 👋 I'm here to help you learn about teaching opportunities in Cambodia. What would you like to know?",
-  "Hello! Welcome to TeachersCambodia. Ask me anything about teaching in Cambodia!",
+  "Hi! 👋 I'm your AI assistant. I can help you with CV optimization, job placement, and career support across all industries. How can I assist you today?",
+  "Hello! Welcome to TeachersCambodia. I'm here to help with CV services, career guidance, and job placement support. What would you like to know?",
+  "Hey there! 👋 I can answer questions about our CV services (starting at R500), application packages, or help guide you through our career support options. How can I help?",
 ];
-
-function findAutoResponse(userMessage: string): string | null {
-  const lowerMessage = userMessage.toLowerCase().trim();
-  
-  // Check for exact matches first
-  if (AUTO_RESPONSES[lowerMessage]) {
-    return AUTO_RESPONSES[lowerMessage];
-  }
-  
-  // Check for keywords
-  for (const [key, response] of Object.entries(AUTO_RESPONSES)) {
-    if (lowerMessage.includes(key)) {
-      return response;
-    }
-  }
-  
-  // Check for common question patterns
-  if (lowerMessage.includes('how much') || lowerMessage.includes('salary') || lowerMessage.includes('pay')) {
-    return AUTO_RESPONSES['salary'];
-  }
-  if (lowerMessage.includes('need') || lowerMessage.includes('require') || lowerMessage.includes('qualification')) {
-    return AUTO_RESPONSES['requirements'];
-  }
-  if (lowerMessage.includes('visa') || lowerMessage.includes('permit') || lowerMessage.includes('document')) {
-    return AUTO_RESPONSES['visa'];
-  }
-  if (lowerMessage.includes('where') || lowerMessage.includes('location') || lowerMessage.includes('city')) {
-    return AUTO_RESPONSES['location'];
-  }
-  if (lowerMessage.includes('apply') || lowerMessage.includes('application') || lowerMessage.includes('resume')) {
-    return AUTO_RESPONSES['apply'];
-  }
-  if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('phone')) {
-    return AUTO_RESPONSES['contact'];
-  }
-  
-  // Default response if no match found
-  return "Thank you for your message! A member of our team will get back to you soon. In the meantime, feel free to ask about:\n• Application requirements\n• Teaching locations\n• Salary and benefits\n• Visa information";
-}
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -135,21 +86,43 @@ export function ChatWidget() {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const messageText = inputValue.trim();
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate typing delay, then send auto-response
-    setTimeout(() => {
-      const autoResponse = findAutoResponse(userMessage.text);
+    try {
+      // Build conversation history for context
+      const conversationHistory = messages
+        .filter(m => m.sender !== 'user' || m.text !== '') // Filter out empty messages
+        .slice(-10) // Keep last 10 messages for context
+        .map(m => ({
+          role: m.sender === 'user' ? 'user' as const : 'assistant' as const,
+          content: m.text
+        }));
+
+      // Get AI response (with fallback to enhanced keyword matching)
+      const aiResponse = await getAIResponse(messageText, conversationHistory);
+
       const supportMessage: Message = {
         id: `support-${Date.now()}`,
-        text: autoResponse || AUTO_RESPONSES['help'] || 'Thank you for your message!',
+        text: aiResponse,
         sender: 'support',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, supportMessage]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      // Fallback response on error
+      const fallbackMessage: Message = {
+        id: `support-${Date.now()}`,
+        text: "I'm having trouble right now. Please try again or email us at info@teacherscambodia.com. In the meantime, feel free to ask about our CV services (R500-R2,499) or application packages!",
+        sender: 'support',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, fallbackMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000); // 1-2 second delay
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -230,8 +203,10 @@ export function ChatWidget() {
                     <MessageCircle className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm">TeachersCambodia Support</h3>
-                    <p className="text-xs text-blue-100">We're here to help!</p>
+                    <h3 className="font-semibold text-sm">TeachersCambodia AI Assistant</h3>
+                    <p className="text-xs text-blue-100">
+                      {isAIEnabled() ? 'AI-powered support' : "We're here to help!"}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

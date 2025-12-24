@@ -18,7 +18,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
     {
       id: 'basic',
       name: 'CV Review',
-      price: 'R300',
+      price: 'R500',
       description: 'Professional CV optimization for all industries and career paths',
       features: [
         'Professional CV review',

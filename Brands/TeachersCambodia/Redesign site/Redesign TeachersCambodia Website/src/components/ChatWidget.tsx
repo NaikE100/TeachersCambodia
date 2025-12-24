@@ -13,9 +13,9 @@ interface Message {
 }
 
 const GREETING_MESSAGES = [
-  "Hi! 👋 I'm your AI assistant. I can help you with CV optimization, job placement, and career support across all industries. How can I assist you today?",
-  "Hello! Welcome to TeachersCambodia. I'm here to help with CV services, career guidance, and job placement support. What would you like to know?",
-  "Hey there! 👋 I can answer questions about our CV services (starting at R500), application packages, or help guide you through our career support options. How can I help?",
+  "Hi! 👋 I'm your AI assistant. I can help you with CV optimization, job placement, and career support for all industries and sectors. How can I assist you today?",
+  "Hello! Welcome to TeachersCambodia. I'm here to help with CV services, career guidance, and job placement support across all industries. What would you like to know?",
+  "Hey there! 👋 I can answer questions about our CV services (starting at R500), application packages, or help guide you through our career support options for any industry. How can I help?",
 ];
 
 export function ChatWidget() {
@@ -115,7 +115,7 @@ export function ChatWidget() {
       // Fallback response on error
       const fallbackMessage: Message = {
         id: `support-${Date.now()}`,
-        text: "I'm having trouble right now. Please try again or email us at info@teacherscambodia.com. In the meantime, feel free to ask about our CV services (R500-R2,499) or application packages!",
+        text: "I'm having trouble right now. Please try again or email us at info@teacherscambodia.com. In the meantime, feel free to ask about our CV services (R500-R2,499) for all industries or application packages!",
         sender: 'support',
         timestamp: new Date(),
       };

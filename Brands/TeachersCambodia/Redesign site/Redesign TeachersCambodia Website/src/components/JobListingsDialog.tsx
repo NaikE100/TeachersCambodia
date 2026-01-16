@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { Search, Briefcase, DollarSign, Users, MapPin, ArrowRight, Building2, CalendarClock, ExternalLink } from 'lucide-react';
+import { Search, Briefcase, DollarSign, Users, MapPin, ArrowRight, Building2, ExternalLink } from 'lucide-react';
 import { ResumeUploadDialog } from './ResumeUploadDialog';
 
 interface Job {
@@ -660,6 +660,7 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [countryFilter, setCountryFilter] = useState<string>('all');
+  const [jobTypeFilter, setJobTypeFilter] = useState<string>('all'); // 'all', 'teaching', 'non-teaching'
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [resumeDialogOpen, setResumeDialogOpen] = useState(false);
 
@@ -667,6 +668,14 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
   const isMiddleEast = destination === 'UAE';
   const isEurope = destination === 'Europe';
   const jobs = isMiddleEast ? middleEastJobs : isEurope ? europeanJobs : [];
+
+  // Helper function to determine if a job is teaching-related
+  const isTeachingJob = (job: Job) => {
+    const teachingKeywords = ['teaching', 'teacher', 'educator', 'tutor', 'education'];
+    const category = job.category.toLowerCase();
+    const position = job.position.toLowerCase();
+    return teachingKeywords.some(keyword => category.includes(keyword) || position.includes(keyword));
+  };
 
   // Get unique categories and countries
   const categories = ['all', ...Array.from(new Set(jobs.map(job => job.category)))];
@@ -679,7 +688,10 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
                          job.company.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || job.category === categoryFilter;
     const matchesCountry = countryFilter === 'all' || job.country === countryFilter;
-    return matchesSearch && matchesCategory && matchesCountry;
+    const matchesJobType = jobTypeFilter === 'all' || 
+                          (jobTypeFilter === 'teaching' && isTeachingJob(job)) ||
+                          (jobTypeFilter === 'non-teaching' && !isTeachingJob(job));
+    return matchesSearch && matchesCategory && matchesCountry && matchesJobType;
   });
 
   const handleApply = (job: Job) => {
@@ -717,8 +729,8 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
             </DialogTitle>
             <DialogDescription>
               {isMiddleEast
-                ? 'Browse available positions in Kuwait and Dubai. All positions close on October 15, 2025.'
-                : 'Browse available positions across Netherlands, Germany, Sweden, Austria, Belgium, and Czech Republic. Opportunities in construction, transportation, hospitality, and skilled trades. Most positions close on October 8, 2025.'
+                ? 'Browse available positions in Kuwait and Dubai. Opportunities in hospitality, management, and culinary sectors.'
+                : 'Browse available positions across Netherlands, Germany, Sweden, Austria, Belgium, and Czech Republic. Opportunities in construction, transportation, hospitality, skilled trades, logistics, and more. Use the "Non-Teaching Opportunities" filter to explore roles beyond education.'
               }
             </DialogDescription>
           </DialogHeader>
@@ -737,6 +749,17 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
               </div>
               
               <div className="flex flex-col sm:flex-row gap-3">
+                <Select value={jobTypeFilter} onValueChange={setJobTypeFilter}>
+                  <SelectTrigger className="w-full sm:w-[200px]">
+                    <SelectValue placeholder="Job Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Opportunities</SelectItem>
+                    <SelectItem value="non-teaching">Non-Teaching Opportunities</SelectItem>
+                    <SelectItem value="teaching">Teaching Opportunities</SelectItem>
+                  </SelectContent>
+                </Select>
+
                 <Select value={countryFilter} onValueChange={setCountryFilter}>
                   <SelectTrigger className="w-full sm:w-[180px]">
                     <SelectValue placeholder="Filter by country" />
@@ -790,6 +813,7 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
                         setSearchQuery('');
                         setCategoryFilter('all');
                         setCountryFilter('all');
+                        setJobTypeFilter('all');
                       }}
                       className="mt-4"
                     >
@@ -861,20 +885,21 @@ export function JobListingsDialog({ destination, open, onOpenChange }: JobListin
                                 </div>
                               )}
 
-                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                 <div className="flex items-center gap-2 text-gray-600">
                                   <DollarSign className="w-4 h-4 text-[#FBBE3C]" />
-                                  <span>{job.salaryRange}</span>
+                                  <span>
+                                    {job.salaryRange}
+                                    {(job.country === 'Kuwait' || job.country === 'Dubai') && (
+                                      <span className="text-xs text-gray-500 ml-1">(Salary paid in EUR (€) equivalent)</span>
+                                    )}
+                                  </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-gray-600">
                                   <Users className="w-4 h-4 text-[#FBBE3C]" />
                                   <span>{job.numberOfPositions} {job.numberOfPositions === 1 ? 'Position' : 'Positions'}</span>
                                 </div>
-                                <div className="flex items-center gap-2 text-gray-600">
-                                  <CalendarClock className="w-4 h-4 text-[#FBBE3C]" />
-                                  <span className="text-xs">Closes: {job.closingDate}</span>
-                                </div>
-                                <div className="flex items-start gap-2 text-gray-600 sm:col-span-2 lg:col-span-3">
+                                <div className="flex items-start gap-2 text-gray-600 sm:col-span-2">
                                   <MapPin className="w-4 h-4 text-[#FBBE3C] mt-0.5 flex-shrink-0" />
                                   <span className="text-xs">{job.nationality}</span>
                                 </div>

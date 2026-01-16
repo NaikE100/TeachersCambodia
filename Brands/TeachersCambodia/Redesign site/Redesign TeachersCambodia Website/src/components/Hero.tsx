@@ -34,7 +34,7 @@ export function Hero({ onNavigate }: HeroProps) {
             transition={{ duration: 0.6 }}
           >
             <div className="inline-block mb-6 px-4 py-2 bg-[#FBBE3C]/20 backdrop-blur-sm rounded-full border border-[#FBBE3C]/40">
-              <span className="text-[#FBBE3C]">Global Teaching & Job Recruitment</span>
+              <span className="text-[#FBBE3C]">Global Recruitment for Educators and Professionals</span>
             </div>
             
             <h1 className="mb-6 text-white drop-shadow-lg">
@@ -42,8 +42,8 @@ export function Hero({ onNavigate }: HeroProps) {
             </h1>
             
             <p className="mb-10 text-gray-100 max-w-2xl mx-auto drop-shadow-md">
-              Teaching opportunities in Cambodia and online platforms worldwide. Job placements in various 
-              sectors across Malta, UAE, UK, and Europe. Professional support every step of the way.
+              Opportunities in Teaching, Hospitality, IT, Finance, and More. Job placements across Cambodia, 
+              UAE, Malta, UK, and 6+ European countries. Professional support every step of the way.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

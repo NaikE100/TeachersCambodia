@@ -48,6 +48,7 @@ export function PaymentSection({ onPaymentSuccess, onPaymentCancel }: PaymentSec
       id: 'premium',
       name: 'Premium Package',
       price: 'R2,499',
+
       description: 'Full-service career support with end-to-end assistance',
       features: [
         'Everything in Standard',

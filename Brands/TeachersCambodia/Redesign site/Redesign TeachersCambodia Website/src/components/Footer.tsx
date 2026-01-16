@@ -47,7 +47,8 @@ export function Footer({ onNavigate }: FooterProps) {
                 />
               </div>
               <p className="text-sm text-gray-400 mb-4">
-                Connecting educators and professionals with life-changing opportunities around the world.
+                Global Recruitment for Educators and Professionals – Opportunities in Teaching, Hospitality, IT, 
+                Finance, and More.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-gray-400">

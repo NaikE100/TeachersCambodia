@@ -43,8 +43,9 @@ export function AboutUs() {
             </div>
             <h2 className="mb-4 text-black">Who We Are</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              TeachersCambodia is a leading global recruitment platform connecting educators with teaching 
-              opportunities in Cambodia and online, plus professionals with diverse job sectors worldwide.
+              Global Recruitment for Educators and Professionals – Opportunities in Teaching, Hospitality, IT, 
+              Finance, and More. Connecting talented professionals with exceptional opportunities across Cambodia, 
+              UAE, Malta, UK, and 6+ European countries.
             </p>
           </motion.div>
 
@@ -68,9 +69,9 @@ export function AboutUs() {
                 continuous guidance throughout your journey.
               </p>
               <p className="text-gray-600">
-                Specializing in teaching placements in Cambodia and online platforms, plus diverse job 
-                opportunities across Malta, UAE, UK, and Europe in hospitality, healthcare, IT, finance, 
-                and other sectors.
+                We provide comprehensive recruitment services across multiple sectors: teaching positions in 
+                Cambodia and online platforms, plus diverse opportunities in hospitality, IT, finance, 
+                healthcare, construction, skilled trades, and more across Malta, UAE, UK, and 6+ European countries.
               </p>
             </motion.div>
 

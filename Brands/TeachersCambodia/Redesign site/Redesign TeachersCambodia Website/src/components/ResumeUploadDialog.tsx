@@ -12,6 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
 interface Destination {
   name: string;
@@ -38,6 +45,7 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [primaryInterest, setPrimaryInterest] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +96,7 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
     setUploadSuccess(false);
   };
 
-  const handleUpload = (e: React.FormEvent) => {
+  const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!selectedFile) {
@@ -101,22 +109,66 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
       return;
     }
 
+    if (!primaryInterest) {
+      toast.error('Please select your primary interest to help us better assist you.');
+      return;
+    }
+
     setIsUploading(true);
 
-    // Simulate upload
-    setTimeout(() => {
+    try {
+      // Prepare form data
+      const formData = new FormData();
+      formData.append('resume', selectedFile);
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('primaryInterest', primaryInterest);
+      
+      if (destination?.jobDetails) {
+        formData.append('position', destination.jobDetails.position);
+        formData.append('company', destination.jobDetails.company);
+        formData.append('salaryRange', destination.jobDetails.salaryRange);
+      }
+      
+      if (destination?.name) {
+        formData.append('destination', destination.name);
+      }
+
+      // Determine API endpoint - use relative path or full URL
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || '/api/submit-resume.php';
+      
+      // Send to backend
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit application');
+      }
+
       setIsUploading(false);
       setUploadSuccess(true);
+      
       const jobInfo = destination?.jobDetails 
         ? `${destination.jobDetails.position} position` 
         : destination?.name;
-      toast.success(`Application for ${jobInfo} submitted successfully! Our team will review it and contact you within 48 hours.`);
+      
+      toast.success(data.message || `Application for ${jobInfo} submitted successfully! Our team will review it and contact you within 48 hours.`);
       
       // Reset form after success
       setTimeout(() => {
         handleClose();
       }, 2000);
-    }, 2000);
+    } catch (error) {
+      setIsUploading(false);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to submit application. Please try again.';
+      toast.error(errorMessage);
+      console.error('Upload error:', error);
+    }
   };
 
   const handleRemove = () => {
@@ -137,6 +189,7 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
     setName('');
     setEmail('');
     setPhone('');
+    setPrimaryInterest('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -265,6 +318,32 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
                 disabled={uploadSuccess}
               />
             </div>
+            
+            {/* Primary Interest - Required Field */}
+            <div className="space-y-2 p-4 bg-[#FBBE3C]/5 rounded-lg border border-[#FBBE3C]/20">
+              <Label htmlFor="primaryInterest" className="text-black font-semibold">
+                What is your primary interest? <span className="text-red-500">*</span>
+              </Label>
+              <p className="text-xs text-gray-600 mb-2">This helps us route your application to the right team</p>
+              <Select value={primaryInterest} onValueChange={setPrimaryInterest} required>
+                <SelectTrigger 
+                  id="primaryInterest" 
+                  disabled={uploadSuccess}
+                  className={!primaryInterest ? 'border-red-300 focus:border-red-500' : ''}
+                >
+                  <SelectValue placeholder="Select your primary interest (Required)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="teaching-cambodia-online">Teaching (Cambodia/Online)</SelectItem>
+                  <SelectItem value="non-teaching-europe-uae">Non-Teaching Jobs (Europe/UAE)</SelectItem>
+                  <SelectItem value="cv-interview-services">CV/Interview Services Only</SelectItem>
+                  <SelectItem value="general-inquiry">General Inquiry</SelectItem>
+                </SelectContent>
+              </Select>
+              {!primaryInterest && (
+                <p className="text-xs text-red-500 mt-1">Please select your primary interest to continue</p>
+              )}
+            </div>
           </div>
 
           {/* Upload Area */}
@@ -384,7 +463,7 @@ export function ResumeUploadDialog({ destination, open, onOpenChange }: ResumeUp
               </Button>
               <Button
                 type="submit"
-                disabled={isUploading || !selectedFile}
+                disabled={isUploading || !selectedFile || !name || !email || !primaryInterest}
                 className="flex-1 bg-[#FBBE3C] hover:bg-[#e5ab35] text-black"
               >
                 {isUploading ? 'Submitting...' : 'Submit Application'}
